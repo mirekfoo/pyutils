@@ -31,10 +31,3 @@ packages = { find = {} }
 [tool.setuptools.package-data]
 "pyutils" = ["py.typed"]
 
-[tool.black]
-line-length = 88
-target-version = ["py38"]
-
-[tool.isort]
-profile = "black"
-
