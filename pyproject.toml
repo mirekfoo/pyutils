@@ -11,12 +11,6 @@ requires-python = ">=3.8"
 license = { text = "MIT" }
 authors = [ { name = "Mirek Forczek", email = "mirekforczek@poczta.onet.pl" } ]
 dependencies = []
-
-[project.urls]
-Homepage = "https://github.com/mirekfoo/pyutils"
-Repository = "https://github.com/mirekfoo/pyutils"
-Changelog = "https://github.com/mirekfoo/pyutils/releases"
-
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
@@ -26,6 +20,12 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Typing :: Typed"  
 ]
+
+[project.urls]
+Homepage = "https://github.com/mirekfoo/pyutils"
+Repository = "https://github.com/mirekfoo/pyutils"
+Changelog = "https://github.com/mirekfoo/pyutils/releases"
+
 
 [project.optional-dependencies]
 dev = [
