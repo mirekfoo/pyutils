@@ -17,6 +17,16 @@ Homepage = "https://github.com/mirekfoo/pyutils"
 Repository = "https://github.com/mirekfoo/pyutils"
 Changelog = "https://github.com/mirekfoo/pyutils/releases"
 
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.8",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed"  
+]
+
 [project.optional-dependencies]
 dev = [
 	"pytest>=7.0",
@@ -25,8 +35,8 @@ dev = [
 	"isort",
 ]
 
-[tool.setuptools]
-packages = { find = {} }
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.package-data]
 "pyutils" = ["py.typed"]
