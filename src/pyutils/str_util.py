@@ -12,7 +12,7 @@
 #     return truncated_s
 
 def truncate_string(s: str, max_length: int = 100) -> str:
-    """Truncate a string to a maximum length, adding '...' if truncated."""
+    """Truncate a string to a maximum length, adding '...[more n chars]' if truncated."""
 
     s_len = len(s)
     truncated_s = s[:max_length]

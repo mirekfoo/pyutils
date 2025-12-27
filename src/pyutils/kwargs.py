@@ -5,4 +5,5 @@ kwargs utilities.
 """
 
 def getKwarg(kwargs, arg, default=False):
+    """Get a keyword argument from kwargs dict, return default if not found."""
     return kwargs[arg] if arg in kwargs else default
