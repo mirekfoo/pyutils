@@ -142,7 +142,7 @@ def patterns_from_template(template: Dict) -> Dict:
 
     return patterns 
 
-def find_match_in_template(template: Dict, dict_item: str, patterns: Dict = None) -> (bool, Any):
+def find_match_in_template(template: Dict, dict_item: str, patterns: Dict = None) -> tuple[bool, Any]:
     """
     Search for a match of dict_item in template or patterns.
     First attempts to find an exact match of dict_item as a key in the template dictionary.
