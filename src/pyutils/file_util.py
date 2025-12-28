@@ -1,15 +1,19 @@
+"""File operations utilities."""
+
 import os
 import shutil
 
-"""File operations utilities."""
-
 def fbak(filename: str, archive_subdir: str = None, copy: bool = False) -> None:
-    """Backup the file. If the file exists, create a backup copy of a file by appending '-i' to its name (before extension).
-        If filename-i.ext already exists, increment i until an unused filename is found.
-        If archive_subdir short name is provided:
-            create such subdir in the directory of the file (if not exists already),
-            put the buckup file into the subdir.
     """
+    Back up a file by appending an incrementing suffix to its name. If the file exists, create a backup copy of a file by appending '-i' to its name (before extension). If filename-i.ext already exists, increment i until an unused filename is found.
+
+    Args:
+        filename (str): Path of the file to back up.
+        archive_subdir (str, optional): Subdirectory to store the backup in.
+            If provided, the subdirectory is created if it does not exist.
+        copy (bool): If True, copy the file; if False, rename (move) it.
+    """
+
     if not os.path.exists(filename):
         return
     

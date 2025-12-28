@@ -35,7 +35,17 @@ from pyutils.str_util import truncate_string
 from pyutils.kwargs import getKwarg
 
 def obj2JSON(obj):
-    """Helper function to convert objects to JSON-serializable format."""
+    """
+    Convert a Python object to a JSON-serializable format.
+
+    Args:
+        obj: The Python object to be converted.
+
+    Returns:
+        Any: A JSON-serializable representation of the object, using model_dump() 
+             if available, otherwise its string representation.
+    """
+
     try:
         return obj.model_dump()
     except Exception:

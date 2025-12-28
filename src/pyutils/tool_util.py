@@ -1,14 +1,14 @@
 
 # TODO Add metadata as in https://packaging.python.org/en/latest/specifications/core-metadata/, so it can be read with https://docs.python.org/3/library/importlib.metadata.html
 
-"""Tool Context.
-Tool Context module for managing global tool state and configuration.
-This module provides a global context for command-line tools, including:
-- Command line invocation
-- Home directory path
-- Command-line arguments
-- Tool name
-- Usage information callback
+"""CLI Tool utilities.
+This module provides basic utilities for command-line tools, including:
+    - Command line invocation
+    - Home directory path
+    - Command-line arguments
+    - Tool name
+    - Usage information callback
+
 Functions:
     getCmd() -> str: Returns the full command line invocation.
     getHomeDir() -> str: Returns the tool's home directory.
@@ -17,9 +17,6 @@ Functions:
     printUsage() -> None: Invokes the usage print callback if set.
     setToolShortName(name: str) -> None: Sets the tool's short name.
     getToolShortName() -> str: Returns the tool's short name.
-Note:
-    This module uses global variables and should be initialized with sys.argv
-    and sys.modules information at import time.
 """
 
 cmd = None
@@ -31,6 +28,7 @@ tool = None
 def getCmd():
     """
     Retrieve the global command variable.
+
     Returns:
         The current value of the global cmd variable.
     """
@@ -43,6 +41,7 @@ def getHomeDir():
     Retrieve the home directory path.
     This function returns the global home_dir variable that contains
     the path to the user's home directory.
+
     Returns:
         str: The path to the home directory.
     """
@@ -53,6 +52,7 @@ def getHomeDir():
 def getArgV():
     """
     Retrieve the global command-line arguments list.
+
     Returns:
         list: The global argv variable containing command-line arguments.
     """
@@ -66,9 +66,11 @@ def setUsagePrintProc(p):
     This function allows you to configure a custom procedure that will be called
     to print usage information. The provided procedure replaces the default usage
     printing behavior.
+
     Args:
         p: A callable that implements the usage printing logic. This procedure
            will be invoked whenever usage information needs to be displayed.
+
     Returns:
         None
     """
@@ -81,6 +83,7 @@ def printUsage():
     Print the usage information for the application.
     Retrieves and executes the global usage function if it has been defined.
     This function serves as a wrapper to display usage/help information to the user.
+
     Raises:
         NameError: If the global 'usage' variable has not been defined before calling this function.
     """
@@ -92,8 +95,10 @@ def printUsage():
 def setToolShortName(name):
     """
     Set the global tool variable to the provided short name.
+
     Args:
         name (str): The short name to assign to the global tool variable.
+
     Returns:
         None
     """
@@ -104,6 +109,7 @@ def setToolShortName(name):
 def getToolShortName():
     """
     Get the short name of the current tool.
+
     Returns:
         str: The short name of the tool if it is set, otherwise returns an empty string.
     """
