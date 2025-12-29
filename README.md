@@ -9,18 +9,6 @@ Docs|
 [Markdown docs](docs-md/docs/index.md)
 [Web docs](https://mirekfoo.github.io/pyutils/api/)
 
-# How to build
+# Development
 
-## Docs
-
-### Markdown docs
-
-```bash
-make mddocs-build
-```
-
-### Web docs
-
-```bash
-make mkdocs-gh-deploy
-```
+* Type: `make help` for available dev procedures
