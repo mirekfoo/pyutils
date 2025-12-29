@@ -1,11 +1,12 @@
 help:
 	@echo "Available targets:"
-	@echo "  help             - Show this help message"
-	@echo "  mkdocs-build     - Build web docs using mkdocs"
-	@echo "  mkdocs-serve     - Serve web docs using mkdocs"
-	@echo "  mkdocs-gh-deploy - Deploy web docs to GitHub Pages using mkdocs"
-	@echo "  mddocs-build     - Build markdown docs using mddocs"
-
+	@echo "  help                                     - Show this help message"
+	@echo "  mkdocs-build                             - Build web docs using mkdocs"
+	@echo "  mkdocs-serve                             - Serve web docs using mkdocs"
+	@echo "  mkdocs-gh-deploy                         - Deploy web docs to GitHub Pages using mkdocs"
+	@echo "  mddocs-build                             - Build markdown docs using mddocs"
+	@echo "  bumpver LEVEL=major|minor|patch          - Bump version"
+	
 # --------------------------------------------------
 
 MKDOCS_INSTALL = mkdocs-install.done
@@ -67,3 +68,14 @@ $(MDDOCS_INDEX_MD_TABLE): $(MDDOCS_GENERATE)
 mddocs-build: \
 	$(MDDOCS_GENERATE) \
 	$(MDDOCS_INDEX_MD_TABLE)
+
+# --------------------------------------------------
+
+BUMPVER_INSTALL = bumpver-install.done
+
+$(BUMPVER_INSTALL):
+	pip install bumpver 
+	touch $(BUMPVER_INSTALL)
+
+bumpver: $(BUMPVER_INSTALL)
+	bumpver update --$(LEVEL)
