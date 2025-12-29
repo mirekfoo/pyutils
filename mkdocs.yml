@@ -22,5 +22,5 @@ plugins:
   - autorefs
   
 nav:
-  # - Home: index.md
+  - Home: index.md
   - API: api/index.md

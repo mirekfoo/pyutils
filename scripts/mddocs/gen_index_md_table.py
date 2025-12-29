@@ -87,7 +87,7 @@ class HeaderParseState(Enum):
     IN_HEADER = 2
     AFTER_HEADER = 3
 
-def get_first_sentence(filepath):
+def get_first_md_doc_sentence(filepath):
     content_before_chapter = []
     
     try:
@@ -143,7 +143,7 @@ def generate_table(sidebar_path: Path, docs_root: Path) -> str:
         seen.add(doc_id)
         fp = find_file(docs_root, doc_id)
         title = extract_title(fp) or Path(doc_id).name
-        info = get_first_sentence(fp)
+        info = get_first_md_doc_sentence(fp)
         if fp:
             rel = os.path.relpath(fp, docs_root)
             rel = rel.replace(os.sep, "/")
