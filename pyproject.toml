@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyutils"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python Utilities Collection."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -29,10 +29,7 @@ Changelog = "https://github.com/mirekfoo/pyutils/releases"
 
 [project.optional-dependencies]
 dev = [
-	"pytest>=7.0",
-	"flake8",
-	"black",
-	"isort",
+  
 ]
 
 [tool.setuptools.packages.find]
