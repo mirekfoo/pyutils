@@ -1,10 +1,13 @@
 help:
 	@echo "Available targets:"
 	@echo "  help                                     - Show this help message"
-	@echo "  mkdocs-build                             - Build web docs using mkdocs"
-	@echo "  mkdocs-serve                             - Serve web docs using mkdocs"
-	@echo "  mkdocs-gh-deploy                         - Deploy web docs to GitHub Pages using mkdocs"
+	@echo ""
+	@echo "  mkdocs CMD=build|serve|gh-deploy         - [Build / Serve/ Deploy to GitHub Pages] web docs using mkdocs"
+	@echo "  mkdocs-clean                             - Clean the web docs"
+	@echo ""
 	@echo "  mddocs-build                             - Build markdown docs using mddocs"
+	@echo "  mddocs-clean                             - Clean the markdown docs"
+	@echo ""
 	@echo "  bumpver LEVEL=major|minor|patch          - Bump version"
 	
 # --------------------------------------------------
@@ -20,14 +23,17 @@ MKDOCS_DIR = docs-web
 $(MKDOCS_DIR):
 	@if [ ! -d "$(MKDOCS_DIR)" ]; then mkdir -p "$(MKDOCS_DIR)"; fi
 
-mkdocs-build: $(MKDOCS_INSTALL) $(MKDOCS_DIR)
-	PYTHONPATH=./src mkdocs build
+# mkdocs-build: $(MKDOCS_INSTALL) $(MKDOCS_DIR)
+# 	PYTHONPATH=./src mkdocs build
 
-mkdocs-serve: $(MKDOCS_INSTALL) $(MKDOCS_DIR)
-	PYTHONPATH=./src mkdocs serve
+# mkdocs-serve: $(MKDOCS_INSTALL) $(MKDOCS_DIR)
+# 	PYTHONPATH=./src mkdocs serve
 
-mkdocs-gh-deploy: $(MKDOCS_INSTALL) $(MKDOCS_DIR)
-	PYTHONPATH=./src mkdocs gh-deploy
+# mkdocs-gh-deploy: $(MKDOCS_INSTALL) $(MKDOCS_DIR)
+# 	PYTHONPATH=./src mkdocs gh-deploy
+
+mkdocs: $(MKDOCS_INSTALL) $(MKDOCS_DIR)
+	PYTHONPATH=./src mkdocs $(CMD)
 
 mkdocs-clean:
 	rm -rf $(MKDOCS_DIR)
@@ -68,6 +74,9 @@ $(MDDOCS_INDEX_MD_TABLE): $(MDDOCS_GENERATE)
 mddocs-build: \
 	$(MDDOCS_GENERATE) \
 	$(MDDOCS_INDEX_MD_TABLE)
+
+mddocs-clean:
+	rm -rf $(MDDOCS_DIR)
 
 # --------------------------------------------------
 
