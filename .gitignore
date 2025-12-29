@@ -1,3 +1,7 @@
+# docs dirs
+docs-web/api/
+docs-web-site/
+
 # .done stamps
 *.done
 
