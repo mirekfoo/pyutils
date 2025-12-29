@@ -7,6 +7,7 @@
 Docs|
 ---|
 [Markdown docs](docs-md/docs/index.md)
+[Web docs](https://mirekfoo.github.io/pyutils/api/)
 
 # How to build
 
