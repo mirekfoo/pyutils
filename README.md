@@ -19,7 +19,7 @@ Docs|
 pip install git+https://github.com/mirekfoo/pyutils.git
 ```
 
-### pip install from pyproject.toml
+### pip install upon pyproject.toml
 
 * `pyproject.toml`:
 ```toml
