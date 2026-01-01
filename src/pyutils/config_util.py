@@ -1,5 +1,7 @@
 """Configuration management utilities."""
 
+from typing import List, Dict, Any
+
 class ConfigError(Exception):
     """Exception raised for errors in the configuration."""
     pass
