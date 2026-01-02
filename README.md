@@ -42,4 +42,4 @@ pip install -e pyutils
 
 # Development
 
-* Type `make help` for available **dev** procedures
+* Type `make help` for available **dev** procedures.
