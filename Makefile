@@ -19,6 +19,17 @@ STAMP = @if [ ! -d ".stamps" ]; then mkdir -p ".stamps"; fi && touch $@
 
 # --------------------------------------------------
 
+PYUTILS_SELF_INSTALL = .stamps/pyutils-self-install.done
+
+# install editable pyutils AFTER mkdocs-pyapi, mddocs to avoid unwanted pyutils reinstall due to github source-pinned dependency
+$(PYUTILS_SELF_INSTALL): $(MKDOCS_INSTALL) $(MDDOCS_INSTALL)
+	pip install -e .
+	$(STAMP)
+
+pyutils-self-install: $(PYUTILS_SELF_INSTALL)
+
+# --------------------------------------------------
+
 PROJECT_SRC := $(wildcard src/pyutils/*.py)
 
 # --------------------------------------------------
@@ -39,7 +50,6 @@ mkdocs: $(MKDOCS_INSTALL) $(MKDOCS_DIR)
 
 mkdocs-clean:
 	rm -f $(MKDOCS_DIR)/*.yml
-	rm -rf $(MKDOCS_DIR)/docs
 	rm -rf docs-web-site
 
 # --------------------------------------------------
@@ -72,17 +82,6 @@ mddocs-clean:
 mddocs-run: \
 	mddocs-clean \
 	$(MDDOCS_GENERATE)
-
-# --------------------------------------------------
-
-PYUTILS_SELF_INSTALL = .stamps/pyutils-self-install.done
-
-# install editable pyutils AFTER mkdocs-pyapi, mddocs to avoid unwanted pyutils reinstall due to github source-pinned dependency
-$(PYUTILS_SELF_INSTALL): $(MKDOCS_INSTALL) $(MDDOCS_INSTALL)
-	pip install -e .
-	$(STAMP)
-
-pyutils-self-install: $(PYUTILS_SELF_INSTALL)
 
 # --------------------------------------------------
 
