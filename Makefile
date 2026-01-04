@@ -38,7 +38,8 @@ mkdocs: $(MKDOCS_INSTALL) $(MKDOCS_DIR)
 	mkdocs-pyapi $(CMD)
 
 mkdocs-clean:
-	rm -rf $(MKDOCS_DIR)
+	rm -f $(MKDOCS_DIR)/*.yml
+	rm -rf $(MKDOCS_DIR)/docs
 	rm -rf docs-web-site
 
 # --------------------------------------------------
