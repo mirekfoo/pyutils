@@ -1,3 +1,4 @@
+# GENERATED UPON mddocs.yml . DO NOT EDIT.
 loaders:
 - search_path:
   - ..\src

@@ -1,6 +1,8 @@
 | Page | Info |
 | --- | --- |
+| [pyutils.config_util](reference/pyutils/config_util.md) | Configuration management utilities. |
 | [pyutils.file_util](reference/pyutils/file_util.md) | File operations utilities. |
+| [pyutils.jinja2_util](reference/pyutils/jinja2_util.md) | Jinja2 utilities. |
 | [pyutils.json_util](reference/pyutils/json_util.md) | JSON formatting utilities. |
 | [pyutils.kwargs](reference/pyutils/kwargs.md) | kwargs utilities. |
 | [pyutils.log_util](reference/pyutils/log_util.md) | FileLogger class for managing file-based logging with archiving logs from previous runs. |

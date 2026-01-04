@@ -2,7 +2,9 @@
   "items": [
     {
       "items": [
+        "reference/pyutils/config_util",
         "reference/pyutils/file_util",
+        "reference/pyutils/jinja2_util",
         "reference/pyutils/json_util",
         "reference/pyutils/kwargs",
         "reference/pyutils/log_util",
