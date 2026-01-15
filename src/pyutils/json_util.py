@@ -174,7 +174,7 @@ def find_match_in_template(template: Dict, dict_item: str, patterns: Dict = None
         >>> template = {"key1": "value1", "key2": "value2"}
         >>> find_match_in_template(template, "key1")
         (True, "value1")
-        >>> patterns = {r"key\d": "numeric_value"}
+        >>> patterns = {r"key_regex": "numeric_value"}
         >>> find_match_in_template(template, "key5", patterns)
         (True, "numeric_value")
         >>> find_match_in_template(template, "unknown")
