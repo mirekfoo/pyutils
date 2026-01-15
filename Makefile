@@ -12,6 +12,11 @@ help:
 	@echo "  mddocs-run                               - Run again mddocs to update docs"	
 	@echo ""
 	@echo "  bumpver LEVEL=major|minor|patch          - Bump version"
+		
+# --------------------------------------------------
+
+THIS_PROJECT := pyutils
+PROJECT_SRC := $(wildcard $(THIS_DIR)/src/$(THIS_PROJECT)/*.py)
 	
 # --------------------------------------------------
 
@@ -30,18 +35,29 @@ ROOT_STAMP = @if [ ! -d "$(ROOT_STAMP_DIR)" ]; then mkdir -p "$(ROOT_STAMP_DIR)"
 
 # --------------------------------------------------
 
-PYUTILS_DEV_INSTALL = $(ROOT_STAMP_DIR)/pyutils-dev-install.done
+DEPS := 
 
-# install editable pyutils AFTER mkdocs-pyapi, mddocs to avoid unwanted pyutils reinstall due to github source-pinned dependency
-$(PYUTILS_DEV_INSTALL): $(MKDOCS_INSTALL) $(MDDOCS_INSTALL)
-	pip install -e .
-	$(ROOT_STAMP)
+define DEP_INSTALL_RULE
+$(ROOT_STAMP_DIR)/$(1)-install:
+	pip install $(1)
+	$$(ROOT_STAMP)
+endef
 
-self-dev-install: $(PYUTILS_DEV_INSTALL)
+$(foreach d,$(DEPS),$(eval $(call DEP_INSTALL_RULE,$(d))))
+
+#.PHONY: deps-install
+deps-install: $(addprefix $(ROOT_STAMP_DIR)/,$(addsuffix -install,$(DEPS)))
 
 # --------------------------------------------------
 
-PROJECT_SRC := $(wildcard $(THIS_DIR)/src/pyutils/*.py)
+THIS_PROJECT_DEV_INSTALL = $(ROOT_STAMP_DIR)/$(THIS_PROJECT)-install
+
+# install editable pyutils AFTER mkdocs-pyapi, mddocs to avoid unwanted pyutils reinstall due to github source-pinned dependency
+$(THIS_PROJECT_DEV_INSTALL): $(MKDOCS_INSTALL) $(MDDOCS_INSTALL)
+	pip install -e .
+	$(ROOT_STAMP)
+
+self-dev-install: deps-install $(THIS_PROJECT_DEV_INSTALL)
 
 # --------------------------------------------------
 
