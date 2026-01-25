@@ -37,6 +37,7 @@ That’s basically runtime structural typing → JSON Schema.
 import inspect
 
 def inspectObjFunctions(obj):
+    """Return the list of functions in the object."""
     l = []
     for name, fn in inspect.getmembers(obj, predicate=callable):
         try:
@@ -47,6 +48,7 @@ def inspectObjFunctions(obj):
     return l
 
 def inspectObjInstData(obj):
+    """Return the list of instance data in the object."""
     l = []
     for name, value in inspect.getmembers(obj):
         if name in getattr(obj, "__dict__", {}):
@@ -293,7 +295,7 @@ from collections.abc import Mapping, Sequence
 
 # =================== + Heterogeneous structures support ======================
 
-# def merge_schemas(schemas):
+# def _merge_schemas(schemas):
 #     unique = []
 #     seen = set()
 
@@ -312,7 +314,7 @@ from collections.abc import Mapping, Sequence
 #     return {"oneOf": unique}
 
 
-def normalize_types(schemas):
+def _normalize_types(schemas):
     types = set()
 
     for s in schemas:
@@ -329,14 +331,14 @@ def normalize_types(schemas):
 
     return {"oneOf": [{"type": t} for t in sorted(types)]}
 
-# def merge_schemas(schemas):
+# def _merge_schemas(schemas):
 #     schemas = [s for s in schemas if s]
 
 #     # extract pure type-only schemas
 #     type_only = [s for s in schemas if set(s.keys()) == {"type"}]
 
 #     if len(type_only) == len(schemas):
-#         return normalize_types(type_only)
+#         return _normalize_types(type_only)
 
 #     # fallback: full oneOf
 #     unique = []
@@ -355,27 +357,27 @@ def normalize_types(schemas):
 
 # ========== array-aware schema merge =========================
 
-def is_array_schema(s):
+def _is_array_schema(s):
     return s.get("type") == "array" and "items" in s
 
-def merge_array_schemas(schemas):
+def _merge_array_schemas(schemas):
     item_schemas = [s["items"] for s in schemas]
     return {
         "type": "array",
-        "items": merge_schemas(item_schemas)
+        "items": _merge_schemas(item_schemas)
     }
 
-# def merge_schemas(schemas):
+# def _merge_schemas(schemas):
 #     schemas = [s for s in schemas if s]
 
 #     # 1️⃣ all arrays → lift merge to items
-#     if all(is_array_schema(s) for s in schemas):
-#         return merge_array_schemas(schemas)
+#     if all(_is_array_schema(s) for s in schemas):
+#         return _merge_array_schemas(schemas)
 
 #     # 2️⃣ pure type-only schemas → normalize
 #     type_only = [s for s in schemas if set(s.keys()) == {"type"}]
 #     if len(type_only) == len(schemas):
-#         return normalize_types(type_only)
+#         return _normalize_types(type_only)
 
 #     # 3️⃣ fallback → oneOf (deduplicated)
 #     unique = []
@@ -393,7 +395,7 @@ def merge_array_schemas(schemas):
 
 # ======== flatten nested oneOf ===============================
 
-def flatten_oneof(schemas):
+def _flatten_oneof(schemas):
     flat = []
     for s in schemas:
         if "oneOf" in s:
@@ -402,23 +404,23 @@ def flatten_oneof(schemas):
             flat.append(s)
     return flat
 
-def merge_schemas(schemas):
+def _merge_schemas(schemas):
     schemas = [s for s in schemas if s]
 
     # flatten nested oneOfs
-    schemas = flatten_oneof(schemas)
+    schemas = _flatten_oneof(schemas)
 
     # all arrays → lift merge to items
-    if all(is_array_schema(s) for s in schemas):
+    if all(_is_array_schema(s) for s in schemas):
         return {
             "type": "array",
-            "items": merge_schemas([s["items"] for s in schemas])
+            "items": _merge_schemas([s["items"] for s in schemas])
         }
 
     # pure type-only schemas → normalize
     type_only = [s for s in schemas if set(s.keys()) == {"type"}]
     if len(type_only) == len(schemas):
-        return normalize_types(type_only)
+        return _normalize_types(type_only)
 
     # deduplicate
     unique = []
@@ -436,10 +438,10 @@ def merge_schemas(schemas):
 
 # ============ flatten nested oneOf =============================
 
-def is_object_schema(s):
+def _is_object_schema(s):
     return s.get("type") == "object"
 
-def merge_object_schemas(schemas):
+def _merge_object_schemas(schemas):
     props = {}
     additional = []
 
@@ -453,36 +455,36 @@ def merge_object_schemas(schemas):
     merged = {
         "type": "object",
         "properties": {
-            name: merge_schemas(schemas)
+            name: _merge_schemas(schemas)
             for name, schemas in props.items()
         }
     }
 
     if additional:
-        merged["additionalProperties"] = merge_schemas(additional)
+        merged["additionalProperties"] = _merge_schemas(additional)
 
     return merged    
 
-def merge_schemas(schemas):
+def _merge_schemas(schemas):
     schemas = [s for s in schemas if s]
 
-    schemas = flatten_oneof(schemas)
+    schemas = _flatten_oneof(schemas)
 
     # 1️⃣ arrays → lift merge to items
-    if all(is_array_schema(s) for s in schemas):
+    if all(_is_array_schema(s) for s in schemas):
         return {
             "type": "array",
-            "items": merge_schemas([s["items"] for s in schemas])
+            "items": _merge_schemas([s["items"] for s in schemas])
         }
 
     # 2️⃣ objects → merge properties
-    if all(is_object_schema(s) for s in schemas):
-        return merge_object_schemas(schemas)
+    if all(_is_object_schema(s) for s in schemas):
+        return _merge_object_schemas(schemas)
 
     # 3️⃣ pure type-only → normalize
     type_only = [s for s in schemas if set(s.keys()) == {"type"}]
     if len(type_only) == len(schemas):
-        return normalize_types(type_only)
+        return _normalize_types(type_only)
 
     # 4️⃣ fallback → oneOf
     unique = []
@@ -568,7 +570,7 @@ def json_schema(obj, *, max_items=10, seen=None):
 
         return {
             "type": "array",
-            "items": merge_schemas(schemas)
+            "items": _merge_schemas(schemas)
         }
 
     # --- mappings ---
@@ -585,7 +587,7 @@ def json_schema(obj, *, max_items=10, seen=None):
         return {
             "type": "object",
             "properties": properties,
-            "additionalProperties": merge_schemas(value_schemas)
+            "additionalProperties": _merge_schemas(value_schemas)
         }
 
     # --- objects ---
@@ -626,7 +628,7 @@ def json_objs_schema(objs, *, max_items=10):
             )
 
     return {
-        name: merge_schemas(schemas)
+        name: _merge_schemas(schemas)
         for name, schemas in props.items()
     }
 
