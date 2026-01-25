@@ -219,16 +219,55 @@ def normalize_types(schemas):
 
     return {"oneOf": [{"type": t} for t in sorted(types)]}
 
+# def merge_schemas(schemas):
+#     schemas = [s for s in schemas if s]
+
+#     # extract pure type-only schemas
+#     type_only = [s for s in schemas if set(s.keys()) == {"type"}]
+
+#     if len(type_only) == len(schemas):
+#         return normalize_types(type_only)
+
+#     # fallback: full oneOf
+#     unique = []
+#     seen = set()
+#     for s in schemas:
+#         key = repr(s)
+#         if key not in seen:
+#             seen.add(key)
+#             unique.append(s)
+
+#     if len(unique) == 1:
+#         return unique[0]
+
+#     return {"oneOf": unique}
+
+
+# ========== array-aware schema merge =========================
+
+def is_array_schema(s):
+    return s.get("type") == "array" and "items" in s
+
+def merge_array_schemas(schemas):
+    item_schemas = [s["items"] for s in schemas]
+    return {
+        "type": "array",
+        "items": merge_schemas(item_schemas)
+    }
+
 def merge_schemas(schemas):
     schemas = [s for s in schemas if s]
 
-    # extract pure type-only schemas
-    type_only = [s for s in schemas if set(s.keys()) == {"type"}]
+    # 1️⃣ all arrays → lift merge to items
+    if all(is_array_schema(s) for s in schemas):
+        return merge_array_schemas(schemas)
 
+    # 2️⃣ pure type-only schemas → normalize
+    type_only = [s for s in schemas if set(s.keys()) == {"type"}]
     if len(type_only) == len(schemas):
         return normalize_types(type_only)
 
-    # fallback: full oneOf
+    # 3️⃣ fallback → oneOf (deduplicated)
     unique = []
     seen = set()
     for s in schemas:
@@ -372,3 +411,5 @@ def json_objs_schema(objs, *, max_items=10):
         name: merge_schemas(schemas)
         for name, schemas in props.items()
     }
+
+            

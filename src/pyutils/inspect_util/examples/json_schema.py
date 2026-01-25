@@ -30,28 +30,28 @@ print(to_json_pretty(json_objs_schema([m1, m2, m3])))
 
 # ----
 
-{
-  "id": {
-    "type": "integer"
-  },
-  "name": {
-    "type": "string"
-  },
-  "tags": {
-    "type": "array",
-    "items": {
-      "oneOf": [
-        {
-          "type": "number"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "string"
-        }
-      ]
-    }
-  }
-}
+# {
+#   "id": {
+#     "type": "integer"
+#   },
+#   "name": {
+#     "type": "string"
+#   },
+#   "tags": {
+#     "type": "array",
+#     "items": {
+#       "oneOf": [
+#         {
+#           "type": "number"
+#         },
+#         {
+#           "type": "boolean"
+#         },
+#         {
+#           "type": "string"
+#         }
+#       ]
+#     }
+#   }
+# }
         
