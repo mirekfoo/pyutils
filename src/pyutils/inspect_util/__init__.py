@@ -1,5 +1,39 @@
 """Type Inspect utilities."""
 
+"""
+json_objs_schema(objs)
+
+Optional upgrades (next tier)
+
+If you want to go further:
+
+mark optional fields via "required"
+
+detect fixed-key dictionaries vs maps
+
+unify additionalProperties + properties
+
+emit patternProperties
+
+support unevaluatedProperties (Draft 2020-12)
+
+🏁 Big picture
+
+At this point, your engine supports:
+
+✔ heterogeneous lists
+
+✔ nested flattening
+
+✔ numeric subtype collapse
+
+✔ array lifting
+
+✔ object lifting
+
+That’s basically runtime structural typing → JSON Schema.
+"""
+
 import inspect
 
 def inspectObjFunctions(obj):
@@ -311,6 +345,70 @@ def merge_schemas(schemas):
         return normalize_types(type_only)
 
     # deduplicate
+    unique = []
+    seen = set()
+    for s in schemas:
+        key = repr(s)
+        if key not in seen:
+            seen.add(key)
+            unique.append(s)
+
+    if len(unique) == 1:
+        return unique[0]
+
+    return {"oneOf": unique}
+
+# ============ flatten nested oneOf =============================
+
+def is_object_schema(s):
+    return s.get("type") == "object"
+
+def merge_object_schemas(schemas):
+    props = {}
+    additional = []
+
+    for s in schemas:
+        for name, schema in s.get("properties", {}).items():
+            props.setdefault(name, []).append(schema)
+
+        if "additionalProperties" in s:
+            additional.append(s["additionalProperties"])
+
+    merged = {
+        "type": "object",
+        "properties": {
+            name: merge_schemas(schemas)
+            for name, schemas in props.items()
+        }
+    }
+
+    if additional:
+        merged["additionalProperties"] = merge_schemas(additional)
+
+    return merged    
+
+def merge_schemas(schemas):
+    schemas = [s for s in schemas if s]
+
+    schemas = flatten_oneof(schemas)
+
+    # 1️⃣ arrays → lift merge to items
+    if all(is_array_schema(s) for s in schemas):
+        return {
+            "type": "array",
+            "items": merge_schemas([s["items"] for s in schemas])
+        }
+
+    # 2️⃣ objects → merge properties
+    if all(is_object_schema(s) for s in schemas):
+        return merge_object_schemas(schemas)
+
+    # 3️⃣ pure type-only → normalize
+    type_only = [s for s in schemas if set(s.keys()) == {"type"}]
+    if len(type_only) == len(schemas):
+        return normalize_types(type_only)
+
+    # 4️⃣ fallback → oneOf
     unique = []
     seen = set()
     for s in schemas:

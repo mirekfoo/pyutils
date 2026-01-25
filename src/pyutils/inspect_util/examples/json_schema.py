@@ -30,42 +30,22 @@ print(to_json_pretty(json_objs_schema([m1, m2, m3])))
 # ---
 
 md1 = HeterogeneousModel(1, "abc", {"a": 1.3})
+md2 = HeterogeneousModel(2, "def", {"a": True, "b": False})
+md3 = HeterogeneousModel(2, "def", {"a": 10})
+
 print(f"deep_type(md1) = {deep_type(md1)}")
 print(to_json_pretty(json_schema(md1)))
 
-md2 = HeterogeneousModel(2, "def", {"a": True})
 print(f"deep_type(md2) = {deep_type(md2)}")
 print(to_json_pretty(json_objs_schema([md1, md2])))
 
-md3 = HeterogeneousModel(2, "def", {"a": 10})
 print(f"deep_type(md3) = {deep_type(md3)}")
 print(to_json_pretty(json_objs_schema([md1, md2, md3])))
 
 
-# ----
+# ---- Output:
 
-# {
-#   "id": {
-#     "type": "integer"
-#   },
-#   "name": {
-#     "type": "string"
-#   },
-#   "tags": {
-#     "type": "array",
-#     "items": {
-#       "oneOf": [
-#         {
-#           "type": "number"
-#         },
-#         {
-#           "type": "boolean"
-#         },
-#         {
-#           "type": "string"
-#         }
-#       ]
-#     }
-#   }
-# }
-        
+"""
+
+"""
+
