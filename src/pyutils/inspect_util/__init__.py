@@ -68,7 +68,60 @@ def deep_homo_type(obj) -> str:
 
 from collections.abc import Iterable
 
-def deep_type(obj, *, max_items=10):
+# def deep_type(obj, *, max_items=10):
+#     """Return the type structure of the object. 
+#        Supports heterogeneous structures.
+
+#     Example output:
+    
+#     deep_type([1, 2, 3])
+#     'list[int]'
+    
+#     deep_type([1, "2", 3])
+#     'list[int | str]'
+    
+#     deep_type([1, "2", 3, [4, 5]])
+#     'list[int | str | list[int]]'
+
+#     deep_type({"a": 1, "b": "2", "c": 3.0, "d": True})
+#     'dict[str, int | str | float | bool]'
+#     """
+
+#     def tname(o):
+#         return type(o).__name__
+
+#     if isinstance(obj, list):
+#         if not obj:
+#             return "list[?]"
+
+#         types = {deep_type(x) for x in obj[:max_items]}
+
+#         if len(types) == 1:
+#             return f"list[{types.pop()}]"
+#         else:
+#             return f"list[{ ' | '.join(sorted(types)) }]"
+
+#     if isinstance(obj, tuple):
+#         return f"tuple[{', '.join(deep_type(x) for x in obj)}]"
+
+#     if isinstance(obj, dict):
+#         if not obj:
+#             return "dict[?, ?]"
+
+#         ktypes = {deep_type(k) for k in obj.keys()}
+#         vtypes = {deep_type(v) for v in obj.values()}
+
+#         k = ktypes.pop() if len(ktypes) == 1 else " | ".join(sorted(ktypes))
+#         v = vtypes.pop() if len(vtypes) == 1 else " | ".join(sorted(vtypes))
+
+#         return f"dict[{k}, {v}]"
+
+#     return tname(obj)
+
+
+# ======== Object-aware deep_type ===============
+
+def deep_type(obj, *, max_items=10, seen=None):
     """Return the type structure of the object. 
        Supports heterogeneous structures.
 
@@ -87,36 +140,59 @@ def deep_type(obj, *, max_items=10):
     'dict[str, int | str | float | bool]'
     """
 
-    def tname(o):
-        return type(o).__name__
+    if seen is None:
+        seen = set()
 
-    if isinstance(obj, list):
-        if not obj:
-            return "list[?]"
+    oid = id(obj)
+    if oid in seen:
+        return "(recursive)"
+    seen.add(oid)
 
-        types = {deep_type(x) for x in obj[:max_items]}
+    # primitives
+    if obj is None:
+        return "None"
+    if isinstance(obj, bool):
+        return "bool"
+    if isinstance(obj, int):
+        return "int"
+    if isinstance(obj, float):
+        return "float"
+    if isinstance(obj, str):
+        return "str"
 
-        if len(types) == 1:
-            return f"list[{types.pop()}]"
-        else:
-            return f"list[{ ' | '.join(sorted(types)) }]"
+    # list / tuple / set
+    if isinstance(obj, (list, tuple, set)):
+        inner = {
+            deep_type(x, max_items=max_items, seen=seen)
+            for x in list(obj)[:max_items]
+        }
+        return f"[{ ' | '.join(sorted(inner)) }]"
 
-    if isinstance(obj, tuple):
-        return f"tuple[{', '.join(deep_type(x) for x in obj)}]"
-
+    # dict
     if isinstance(obj, dict):
-        if not obj:
-            return "dict[?, ?]"
+        key_types = {
+            deep_type(k, max_items=max_items, seen=seen)
+            for k in obj.keys()
+        }
+        val_types = {
+            deep_type(v, max_items=max_items, seen=seen)
+            for v in obj.values()
+        }
+        return f"dict[{ ' | '.join(key_types) }, { ' | '.join(val_types) }]"
 
-        ktypes = {deep_type(k) for k in obj.keys()}
-        vtypes = {deep_type(v) for v in obj.values()}
+    # user-defined object → GO DEEP
+    if hasattr(obj, "__dict__"):
+        fields = {
+            name: deep_type(val, max_items=max_items, seen=seen)
+            for name, val in vars(obj).items()
+            if not name.startswith("_")
+        }
 
-        k = ktypes.pop() if len(ktypes) == 1 else " | ".join(sorted(ktypes))
-        v = vtypes.pop() if len(vtypes) == 1 else " | ".join(sorted(vtypes))
+        inner = ", ".join(f"{k}: {v}" for k, v in fields.items())
+        return f"{obj.__class__.__name__}{{{inner}}}"
 
-        return f"dict[{k}, {v}]"
-
-    return tname(obj)
+    # fallback
+    return obj.__class__.__name__
 
 
 from collections.abc import Mapping, Sequence
