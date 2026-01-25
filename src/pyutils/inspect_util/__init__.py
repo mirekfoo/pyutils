@@ -140,6 +140,8 @@ def deep_type(obj, *, max_items=10, seen=None):
 
     deep_type({"a": 1, "b": "2", "c": 3.0, "d": True})
     'dict[str, int | str | float | bool]'
+
+    See: examples/deep_type_json_schema.py
     """
 
     if seen is None:
@@ -531,9 +533,10 @@ def json_schema(obj, *, max_items=10, seen=None):
             }
         }       
 
+        See: examples/deep_type_json_schema.py
+
         TODO:
         - Add $defs + $ref (true recursion)
-        - Detect heterogenous types
     """
 
     if seen is None:
@@ -615,6 +618,8 @@ def json_objs_schema(objs, *, max_items=10):
 
     Return:
         JSON-schema
+
+    See: examples/deep_type_json_schema.py
     """
     
     props = {}
