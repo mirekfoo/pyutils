@@ -9,6 +9,7 @@
 | [pyutils.kwargs](reference/pyutils/kwargs.md) | kwargs utilities. |
 | [pyutils.log_util](reference/pyutils/log_util.md) | FileLogger class for managing file-based logging with archiving logs from previous runs. |
 | [pyutils.logging_util](reference/pyutils/logging_util.md) | Redirect utility for logging module. |
+| [pyutils.markdown_util](reference/pyutils/markdown_util.md) | Markdown utilities. |
 | [pyutils.pandas_util](reference/pyutils/pandas_util.md) | Pandas utility functions. |
 | [pyutils.str_util](reference/pyutils/str_util.md) | String utility functions. |
 | [pyutils.tool_util](reference/pyutils/tool_util.md) | CLI Tool utilities. |
