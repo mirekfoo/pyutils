@@ -11,6 +11,8 @@ with support for:
     - Pydantic model serialization
 
 Key Functions:
+    - to_json: Convert an object to a JSON string.
+    - to_json_pretty: Convert an object to a JSON string with a default indentation of 2 spaces.
     - obj2JSON: Convert objects to JSON-serializable format
     - as_json: Convert objects to formatted JSON strings with indentation control
     - as_json_str_truncated: Convert objects to JSON with optional string truncation
@@ -30,6 +32,7 @@ Dependencies:
 from typing import Any, Dict, List, Optional
 import json
 import re
+import sys
 
 from pyutils.str_util import truncate_string
 from pyutils.kwargs import getKwarg
@@ -318,3 +321,31 @@ def list_as_json(l: List, **kwargs) -> str:
     else:
         json_str += "\n]"
     return json_str
+
+def to_json(obj, indent = None) -> str:
+    """
+    Convert an object to a JSON string.
+
+    Args:
+        obj: The object to convert to JSON.
+        indent (int, optional): If ``indent`` is a non-negative integer, then JSON array elements and
+        object members will be pretty-printed with that indent level. An indent
+        level of 0 will only insert newlines. ``None`` is the most compact
+        representation.
+
+    Returns:
+        str: The JSON string representation of the object.   
+    """
+    return json.dumps(obj, indent=indent, default=obj2JSON)
+
+def to_json_pretty(obj) -> str:
+    """
+    Convert an object to a JSON string with a default indentation of 2 spaces.
+
+    Args:
+        obj: The object to convert to JSON.
+
+    Returns:
+        str: The JSON string representation of the object with a default indentation of 2 spaces.   
+    """
+    return to_json(obj, indent=2)
