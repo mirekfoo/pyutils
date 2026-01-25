@@ -255,19 +255,62 @@ def merge_array_schemas(schemas):
         "items": merge_schemas(item_schemas)
     }
 
+# def merge_schemas(schemas):
+#     schemas = [s for s in schemas if s]
+
+#     # 1️⃣ all arrays → lift merge to items
+#     if all(is_array_schema(s) for s in schemas):
+#         return merge_array_schemas(schemas)
+
+#     # 2️⃣ pure type-only schemas → normalize
+#     type_only = [s for s in schemas if set(s.keys()) == {"type"}]
+#     if len(type_only) == len(schemas):
+#         return normalize_types(type_only)
+
+#     # 3️⃣ fallback → oneOf (deduplicated)
+#     unique = []
+#     seen = set()
+#     for s in schemas:
+#         key = repr(s)
+#         if key not in seen:
+#             seen.add(key)
+#             unique.append(s)
+
+#     if len(unique) == 1:
+#         return unique[0]
+
+#     return {"oneOf": unique}
+
+# ======== flatten nested oneOf ===============================
+
+def flatten_oneof(schemas):
+    flat = []
+    for s in schemas:
+        if "oneOf" in s:
+            flat.extend(s["oneOf"])
+        else:
+            flat.append(s)
+    return flat
+
 def merge_schemas(schemas):
     schemas = [s for s in schemas if s]
 
-    # 1️⃣ all arrays → lift merge to items
-    if all(is_array_schema(s) for s in schemas):
-        return merge_array_schemas(schemas)
+    # flatten nested oneOfs
+    schemas = flatten_oneof(schemas)
 
-    # 2️⃣ pure type-only schemas → normalize
+    # all arrays → lift merge to items
+    if all(is_array_schema(s) for s in schemas):
+        return {
+            "type": "array",
+            "items": merge_schemas([s["items"] for s in schemas])
+        }
+
+    # pure type-only schemas → normalize
     type_only = [s for s in schemas if set(s.keys()) == {"type"}]
     if len(type_only) == len(schemas):
         return normalize_types(type_only)
 
-    # 3️⃣ fallback → oneOf (deduplicated)
+    # deduplicate
     unique = []
     seen = set()
     for s in schemas:
@@ -281,6 +324,7 @@ def merge_schemas(schemas):
 
     return {"oneOf": unique}
 
+# ===============================================================    
 
 def json_schema(obj, *, max_items=10, seen=None):
     """Return the JSON schema of the object.
