@@ -2,8 +2,16 @@
   "items": [
     {
       "items": [
+        {
+          "items": [
+            "reference/pyutils/inspect_util/__init__"
+          ],
+          "label": "pyutils.inspect_util",
+          "type": "category"
+        },
         "reference/pyutils/config_util",
         "reference/pyutils/file_util",
+        "reference/pyutils/import_util",
         "reference/pyutils/jinja2_util",
         "reference/pyutils/json_util",
         "reference/pyutils/kwargs",

@@ -15,6 +15,8 @@ with support for:
     - Pydantic model serialization
 
 Key Functions:
+    - to_json: Convert an object to a JSON string.
+    - to_json_pretty: Convert an object to a JSON string with a default indentation of 2 spaces.
     - obj2JSON: Convert objects to JSON-serializable format
     - as_json: Convert objects to formatted JSON strings with indentation control
     - as_json_str_truncated: Convert objects to JSON with optional string truncation
@@ -142,7 +144,7 @@ against dict_item using the patterns dictionary keys.
   &gt;&gt;&gt; template = {&quot;key1&quot;: &quot;value1&quot;, &quot;key2&quot;: &quot;value2&quot;}
   &gt;&gt;&gt; find_match_in_template(template, &quot;key1&quot;)
   (True, &quot;value1&quot;)
-  &gt;&gt;&gt; patterns = {r&quot;key\d&quot;: &quot;numeric_value&quot;}
+  &gt;&gt;&gt; patterns = {r&quot;key_regex&quot;: &quot;numeric_value&quot;}
   &gt;&gt;&gt; find_match_in_template(template, &quot;key5&quot;, patterns)
   (True, &quot;numeric_value&quot;)
   &gt;&gt;&gt; find_match_in_template(template, &quot;unknown&quot;)
@@ -221,4 +223,42 @@ Convert a list to a formatted JSON string representation.
   &#x27;None&#x27;
   &gt;&gt;&gt; list_as_json(42)
   &#x27;42&#x27;
+
+#### to\_json
+
+```python
+def to_json(obj, indent=None) -> str
+```
+
+Convert an object to a JSON string.
+
+**Arguments**:
+
+- `obj` - The object to convert to JSON.
+- `indent` _int, optional_ - If ``indent`` is a non-negative integer, then JSON array elements and
+  object members will be pretty-printed with that indent level. An indent
+  level of 0 will only insert newlines. ``None`` is the most compact
+  representation.
+  
+
+**Returns**:
+
+- `str` - The JSON string representation of the object.
+
+#### to\_json\_pretty
+
+```python
+def to_json_pretty(obj) -> str
+```
+
+Convert an object to a JSON string with a default indentation of 2 spaces.
+
+**Arguments**:
+
+- `obj` - The object to convert to JSON.
+  
+
+**Returns**:
+
+- `str` - The JSON string representation of the object with a default indentation of 2 spaces.
 
