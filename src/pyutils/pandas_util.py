@@ -1,6 +1,7 @@
 """Pandas utility functions."""
 
 import pandas as pd
+from pyutils.type_util import indexable
 
 def tuples2DF(tuples : list, columns : list = None) -> pd.DataFrame:
     """
@@ -50,9 +51,15 @@ def dicts2DF(dicts : list) -> pd.DataFrame:
     if (dicts is None or len(dicts) == 0):
         return pd.DataFrame()
 
-    columns = dicts[0].keys()
+    if callable(getattr(dicts[0], "keys", None)):
+        columns = dicts[0].keys()
+    else:
+        columns = vars(dicts[0]).keys()
 
     # Construct list of tuples such that each tuple values from the dict in keys order
-    tuples = [tuple(d[key] for key in columns) for d in dicts]
+    if indexable(dicts[0]):
+        tuples = [tuple(d[key] for key in columns) for d in dicts]
+    else:
+        tuples = [tuple(vars(d)[key] for key in columns) for d in dicts]
 
     return pd.DataFrame(tuples, columns=columns)
