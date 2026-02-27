@@ -91,6 +91,16 @@ mddocs-install: $(MDDOCS_INSTALL)
 
 # --------------------------------------------------
 
+MD_INCL_INSTALL = $(ROOT_STAMP_DIR)/md-incl-install.done
+
+$(MD_INCL_INSTALL):
+	pip install md-incl 
+	$(ROOT_STAMP)
+
+md-incl-install: $(MD_INCL_INSTALL)
+
+# --------------------------------------------------
+
 MDDOCS_DIR = $(THIS_DIR)/docs-md
 
 MDDOCS_GENERATE = $(ROOT_STAMP_DIR)/mddocs-generate.done
@@ -98,6 +108,9 @@ MDDOCS_GENERATE = $(ROOT_STAMP_DIR)/mddocs-generate.done
 $(MDDOCS_GENERATE): $(MDDOCS_INSTALL) $(PROJECT_SRC)
 	mddocs
 	$(ROOT_STAMP)
+
+readme-update: $(MD_INCL_INSTALL)
+	md_incl $(ROOT_DIR)/README.md.src $(ROOT_DIR)/README.md 
 
 mddocs-build: \
 	$(MDDOCS_GENERATE)
@@ -108,7 +121,8 @@ mddocs-clean:
 
 mddocs-run: \
 	mddocs-clean \
-	$(MDDOCS_GENERATE)
+	$(MDDOCS_GENERATE) \
+	readme-update
 
 # --------------------------------------------------
 
