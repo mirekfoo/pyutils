@@ -36,6 +36,10 @@ That’s basically runtime structural typing → JSON Schema.
 
 import inspect
 
+def here():
+    """Return the name of the calling function."""
+    return inspect.currentframe().f_back.f_code.co_name
+
 def inspectObjFunctions(obj):
     """Return the list of functions in the object."""
     l = []
