@@ -5,6 +5,21 @@ import importlib
 from functools import cache
 
 def load_class(full_class_path: str):
+    """
+    Load a class from a full module path string.
+    Args:
+        full_class_path (str): The full path to the class in the format 'module.path.ClassName'.
+    Returns:
+        type: The loaded class object.
+    Raises:
+        ValueError: If the full_class_path cannot be split into module and class name.
+        ImportError: If the module cannot be imported or the class cannot be loaded.
+        AttributeError: If the class name does not exist in the module.
+        TypeError: If the loaded object is not a class.
+    Example:
+        >>> MyClass = load_class('mypackage.mymodule.MyClass')
+    """
+
     try:
         module_path, class_name = full_class_path.rsplit('.', 1)
         module = importlib.import_module(module_path)
@@ -17,10 +32,18 @@ def load_class(full_class_path: str):
 
 @cache
 def get_class(full_class_path: str):
+    """
+    Get a class from a full module path string, caching the result.
+    Args:
+        full_class_path (str): The full path to the class in the format 'module.path.ClassName'.
+    Returns:
+        type: The loaded class object.
+    """
     return load_class(full_class_path)
 
 def _call_function(expr: str):
     """
+    Call a function from a string expression.
     Handles expressions like:
         tiktoken.get_encoding('gpt2')
     """
@@ -68,6 +91,10 @@ def _call_function(expr: str):
 
 def create_instance(spec: str, *args, **kwargs):
     """
+    Create an instance of a class or call a function based on the provided specification string.
+    The specification can be either:
+        - A full class path in the format 'module.path.ClassName'
+        - A function call expression in the format 'module.path.function_name(args, kwargs)'
     Supports:
         create_instance("mypkg.mod.MyClass", ...)
         create_instance("tiktoken.get_encoding('gpt2')")
