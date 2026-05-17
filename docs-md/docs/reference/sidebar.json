@@ -9,18 +9,21 @@
           "label": "pyutils.inspect_util",
           "type": "category"
         },
+        "reference/pyutils/class_util",
         "reference/pyutils/config_util",
         "reference/pyutils/file_util",
         "reference/pyutils/import_util",
         "reference/pyutils/jinja2_util",
         "reference/pyutils/json_util",
         "reference/pyutils/kwargs",
+        "reference/pyutils/latex_util",
         "reference/pyutils/log_util",
         "reference/pyutils/logging_util",
         "reference/pyutils/markdown_util",
         "reference/pyutils/pandas_util",
         "reference/pyutils/str_util",
-        "reference/pyutils/tool_util"
+        "reference/pyutils/tool_util",
+        "reference/pyutils/type_util"
       ],
       "label": "pyutils",
       "type": "category"
