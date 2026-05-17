@@ -19,7 +19,7 @@
     
     
       
-        <title>pyutils.pandas_util - pyutils Documentation</title>
+        <title>pyutils.latex_util - pyutils Documentation</title>
       
     
     
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pyutilspandas_util" class="md-skip">
+        <a href="#pyutilslatex_util" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              pyutils.pandas_util
+              pyutils.latex_util
             
           </span>
         </div>
@@ -268,22 +268,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pyutils.pandas_util" class="md-nav__link">
+  <a href="#pyutils.latex_util" class="md-nav__link">
     <span class="md-ellipsis">
       
-        pandas_util
+        latex_util
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="pandas_util">
+    <nav class="md-nav" aria-label="latex_util">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pyutils.pandas_util.dict2DF" class="md-nav__link">
+  <a href="#pyutils.latex_util.latex_boxed_to_html" class="md-nav__link">
     <span class="md-ellipsis">
       
-        dict2DF
+        latex_boxed_to_html
       
     </span>
   </a>
@@ -291,10 +291,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pyutils.pandas_util.dicts2DF" class="md-nav__link">
+  <a href="#pyutils.latex_util.latex_boxed_to_md" class="md-nav__link">
     <span class="md-ellipsis">
       
-        dicts2DF
+        latex_boxed_to_md
       
     </span>
   </a>
@@ -302,10 +302,43 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pyutils.pandas_util.tuples2DF" class="md-nav__link">
+  <a href="#pyutils.latex_util.latex_math_operands_to_html" class="md-nav__link">
     <span class="md-ellipsis">
       
-        tuples2DF
+        latex_math_operands_to_html
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyutils.latex_util.latex_math_operands_to_unicode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        latex_math_operands_to_unicode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyutils.latex_util.latex_subscripts_to_html" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        latex_subscripts_to_html
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyutils.latex_util.latex_subscripts_to_text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        latex_subscripts_to_text
       
     </span>
   </a>
@@ -334,22 +367,22 @@
 
 
 
-<h1 id="pyutilspandas_util">pyutils.pandas_util</h1>
+<h1 id="pyutilslatex_util">pyutils.latex_util</h1>
 
 
 <div class="doc doc-object doc-module">
 
 
 
-<h2 id="pyutils.pandas_util" class="doc doc-heading">
-            <span class="doc doc-object-name doc-module-name">pyutils.pandas_util</span>
+<h2 id="pyutils.latex_util" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">pyutils.latex_util</span>
 
 
 </h2>
 
     <div class="doc doc-contents first">
 
-        <p>Pandas utility functions.</p>
+        <p>latex utilities.</p>
 
 
 
@@ -374,17 +407,21 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="pyutils.pandas_util.dict2DF" class="doc doc-heading">
-            <span class="doc doc-object-name doc-function-name">dict2DF</span>
+<h3 id="pyutils.latex_util.latex_boxed_to_html" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">latex_boxed_to_html</span>
 
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">dict2DF</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">latex_boxed_to_html</span><span class="p">(</span><span class="n">latex</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
-        <p>Converts dict into Pandas DataFrame for nice viewing.</p>
+        <p>Convert LaTeX oxed{...} constructs to HTML span elements.</p>
+<p>This function finds occurrences of the LaTeX command <code>oxed{...}</code>
+and replaces them with HTML <code>&lt;span class="boxed"&gt;...&lt;/span&gt;</code> elements.
+It uses a non-greedy regular expression so that nested or multiple boxed
+constructs on the same line are handled individually.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -400,34 +437,19 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>d</code>
+                <code>latex</code>
             </td>
             <td>
-                  <code><span title="dict">dict</span></code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>dict.</p>
+                <p>Input string that may contain LaTeX <code>oxed{...}</code>
+constructs.</p>
               </div>
             </td>
             <td>
                 <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>columns</code>
-            </td>
-            <td>
-                  <code><span title="list">list</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>list of column names.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
             </td>
           </tr>
       </tbody>
@@ -438,24 +460,36 @@
     <table>
       <thead>
         <tr>
-          <th>Type</th>
+<th>Name</th>          <th>Type</th>
           <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td>
-                  <code><span title="pandas.DataFrame">DataFrame</span></code>
+<td><code>str</code></td>            <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>pd.DataFrame: A DataFrame object.</p>
+                <p>A new string where each <code>oxed{...}</code> has been replaced by
+the equivalent HTML span element <code>&lt;span class="boxed"&gt;...&lt;/span&gt;</code>.</p>
               </div>
             </td>
           </tr>
       </tbody>
     </table>
 
+
+<details class="notes" open>
+  <summary>Notes</summary>
+  <ul>
+<li>Only the simple form <code>oxed{...}</code> is supported; contents
+  inside the braces are captured by <code>(.*?)</code> and inserted
+  verbatim into the HTML output.</li>
+<li>This function does not perform any escaping of HTML characters
+  that may appear inside the boxed content. Callers should handle
+  HTML escaping if necessary.</li>
+</ul>
+</details>
 
     </div>
 
@@ -464,17 +498,21 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="pyutils.pandas_util.dicts2DF" class="doc doc-heading">
-            <span class="doc doc-object-name doc-function-name">dicts2DF</span>
+<h3 id="pyutils.latex_util.latex_boxed_to_md" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">latex_boxed_to_md</span>
 
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">dicts2DF</span><span class="p">(</span><span class="n">dicts</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">latex_boxed_to_md</span><span class="p">(</span><span class="n">latex</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
-        <p>Converts list of dicts into Pandas DataFrame for nice viewing.</p>
+        <p>Convert LaTeX oxed{...} constructs to Markdown bold text.</p>
+<p>This function finds occurrences of the LaTeX command <code>oxed{...}</code>
+and replaces them with Markdown bold syntax <code>**...**</code>. It uses a
+non-greedy regular expression so that nested or multiple boxed
+constructs on the same line are handled individually.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -490,14 +528,15 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>dicts</code>
+                <code>latex</code>
             </td>
             <td>
-                  <code><span title="list">list</span></code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>list of dicts.</p>
+                <p>Input string that may contain LaTeX <code>oxed{...}</code>
+constructs.</p>
               </div>
             </td>
             <td>
@@ -512,24 +551,35 @@
     <table>
       <thead>
         <tr>
-          <th>Type</th>
+<th>Name</th>          <th>Type</th>
           <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td>
-                  <code><span title="pandas.DataFrame">DataFrame</span></code>
+<td><code>str</code></td>            <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>pd.DataFrame: A DataFrame object.</p>
+                <p>A new string where each <code>oxed{...}</code> has been replaced by
+the equivalent Markdown bold text <code>**...**</code>.</p>
               </div>
             </td>
           </tr>
       </tbody>
     </table>
 
+
+<details class="notes" open>
+  <summary>Notes</summary>
+  <ul>
+<li>Only the simple form <code>oxed{...}</code> is supported; contents
+  inside the braces are captured by <code>(.*?)</code> and inserted
+  verbatim into the Markdown output.</li>
+<li>This function does not perform any escaping of Markdown
+  characters that may appear inside the boxed content.</li>
+</ul>
+</details>
 
     </div>
 
@@ -538,17 +588,17 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="pyutils.pandas_util.tuples2DF" class="doc doc-heading">
-            <span class="doc doc-object-name doc-function-name">tuples2DF</span>
+<h3 id="pyutils.latex_util.latex_math_operands_to_html" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">latex_math_operands_to_html</span>
 
 
 </h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">tuples2DF</span><span class="p">(</span><span class="n">tuples</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">latex_math_operands_to_html</span><span class="p">(</span><span class="n">latex</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
-        <p>Converts list of tuples into Pandas DataFrame for nice viewing.</p>
+        <p>Convert LaTeX math operand commands to HTML numeric character references.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -564,34 +614,18 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>tuples</code>
+                <code>latex</code>
             </td>
             <td>
-                  <code><span title="list">list</span></code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>list of tuples.</p>
+                <p>A string containing LaTeX math expressions.</p>
               </div>
             </td>
             <td>
                 <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>columns</code>
-            </td>
-            <td>
-                  <code><span title="list">list</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>list of column names.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
             </td>
           </tr>
       </tbody>
@@ -602,24 +636,289 @@
     <table>
       <thead>
         <tr>
-          <th>Type</th>
+<th>Name</th>          <th>Type</th>
           <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td>
-                  <code><span title="pandas.DataFrame">DataFrame</span></code>
+<td><code>str</code></td>            <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>pd.DataFrame: A DataFrame object.</p>
+                <p>The converted string where recognized LaTeX operand commands
+such as "\le", "\ge", and "\times" are replaced with
+their HTML numeric character reference equivalents (e.g., "&#x2264;").</p>
               </div>
             </td>
           </tr>
       </tbody>
     </table>
 
+
+<details class="notes" open>
+  <summary>Notes</summary>
+  <p>This function uses a replacement mapping defined in
+<code>latex_math_operands_to_html_replacements</code>, which is dynamically
+generated from <code>latex_math_operands_to_unicode_replacements</code>.
+Only keys present in that mapping are replaced; other LaTeX syntax
+is left unchanged.</p>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pyutils.latex_util.latex_math_operands_to_unicode" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">latex_math_operands_to_unicode</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">latex_math_operands_to_unicode</span><span class="p">(</span><span class="n">latex</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Convert LaTeX math operand commands to Unicode symbols.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>latex</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A string containing LaTeX math expressions.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>str</code></td>            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The converted string where recognized LaTeX operand commands
+such as "\le", "\ge", and "\times" are replaced with
+their Unicode equivalents.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="notes" open>
+  <summary>Notes</summary>
+  <p>This function uses a fixed replacement mapping defined in
+<code>latex_math_operands_to_unicode_replacements</code>. Only keys present in
+that mapping are replaced; other LaTeX syntax is left unchanged.</p>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pyutils.latex_util.latex_subscripts_to_html" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">latex_subscripts_to_html</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">latex_subscripts_to_html</span><span class="p">(</span><span class="n">latex</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Convert LaTeX subscript syntax to HTML <sub> tags.</p>
+<p>This function replaces short subscript forms like <code>_i</code> and braced
+forms like <code>_{ij}</code> with HTML <code>&lt;sub&gt;...&lt;/sub&gt;</code> equivalents. Only
+alphanumeric subscript identifiers are handled; other LaTeX syntax
+is left unchanged.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>latex</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A string containing LaTeX expressions that may
+include subscript syntax (<code>_x</code> or <code>_{xy}</code>).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>str</code></td>            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The input string with LaTeX subscripts converted to HTML
+<code>&lt;sub&gt;</code> tags. For example, <code>a_i</code> -&gt; <code>a&lt;sub&gt;i&lt;/sub&gt;</code> and
+<code>b_{ij}</code> -&gt; <code>b&lt;sub&gt;ij&lt;/sub&gt;</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="notes" open>
+  <summary>Notes</summary>
+  <ul>
+<li>The function performs two regex substitutions:
+    1) short form <code>_x</code> -&gt; <code>&lt;sub&gt;x&lt;/sub&gt;</code>
+    2) braced form <code>_{xy}</code> -&gt; <code>&lt;sub&gt;xy&lt;/sub&gt;</code></li>
+<li>Only letters and digits are accepted inside the subscript
+  (pattern <code>[A-Za-z0-9]+</code>).</li>
+</ul>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pyutils.latex_util.latex_subscripts_to_text" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">latex_subscripts_to_text</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">latex_subscripts_to_text</span><span class="p">(</span><span class="n">latex</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Convert LaTeX subscripts to plain text notation.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>latex</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A string containing LaTeX expressions with subscript
+syntax, such as <code>_i</code> or <code>_{ij}</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>str</code></td>            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The processed string where LaTeX subscripts are replaced with
+parenthesized text, for example <code>_i</code> becomes <code>(i)</code> and
+<code>_{ij}</code> becomes <code>(ij)</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="notes" open>
+  <summary>Notes</summary>
+  <p>Only alphanumeric subscript identifiers are handled. Other LaTeX
+syntax is left unchanged.</p>
+</details>
 
     </div>
 
