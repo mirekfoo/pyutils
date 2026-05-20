@@ -22,6 +22,7 @@ def read_config_arg(args: Dict, arg: str, defval: Any) -> Any:
     if arg in args:
         return args[arg]
     elif defval is not None:
+        args[arg] = defval # add default value to the dictionary
         return defval
     else:
         raise ConfigError(f"Configuration error: '{arg}' not defined.")
