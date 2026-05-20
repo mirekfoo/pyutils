@@ -2,6 +2,7 @@
 
 from typing import List, Dict, Any
 
+_addDefaults = True
 class ConfigError(Exception):
     """Exception raised for errors in the configuration."""
     pass
@@ -22,7 +23,8 @@ def read_config_arg(args: Dict, arg: str, defval: Any) -> Any:
     if arg in args:
         return args[arg]
     elif defval is not None:
-        args[arg] = defval # add default value to the dictionary
+        if _addDefaults:
+            args[arg] = defval # add default value to the dictionary
         return defval
     else:
         raise ConfigError(f"Configuration error: '{arg}' not defined.")
@@ -43,16 +45,24 @@ def read_config_harg(args: Dict, arg: str, defval: Any) -> Any:
     val = args
     arg_split = arg.split(".")
     
-    for a in arg_split:
-        if a in val:
+    for idx, a in enumerate(arg_split):
+        if isinstance(val, dict) and a in val:
             val = val[a]
-        else:
-            val = None
-            break
+            continue
 
-    if val is not None:
-        return val
-    elif defval is not None:
-        return defval
-    else:
+        # If the path is missing, return or add the default value.
+        if defval is not None:
+            if _addDefaults:
+                if not isinstance(val, dict):
+                    raise ConfigError(
+                        f"Configuration error: '{'.'.join(arg_split[:idx])}' is not a dictionary, cannot add '{arg}'."
+                    )
+                for missing_key in arg_split[idx:-1]:
+                    val[missing_key] = {}
+                    val = val[missing_key]
+                val[arg_split[-1]] = defval
+            return defval
+
         raise ConfigError(f"Configuration error: '{arg}' not defined.")
+
+    return val
