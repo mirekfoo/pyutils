@@ -12,6 +12,8 @@ help:
 	@echo "  mddocs-run                               - Run again mddocs to update docs"	
 	@echo ""
 	@echo "  bumpver LEVEL=major|minor|patch          - Bump version"
+	@echo ""
+	@echo "  tests-run                               - Run all tests"
 		
 # --------------------------------------------------
 
@@ -35,19 +37,37 @@ ROOT_STAMP = @if [ ! -d "$(ROOT_STAMP_DIR)" ]; then mkdir -p "$(ROOT_STAMP_DIR)"
 
 # --------------------------------------------------
 
-DEPS := 
-
 define DEP_INSTALL_RULE
 $(ROOT_STAMP_DIR)/$(1)-install:
 	pip install $(1)
 	$$(ROOT_STAMP)
 endef
 
+# --------------------------------------------------
+
+DEPS := 
+
 $(foreach d,$(DEPS),$(eval $(call DEP_INSTALL_RULE,$(d))))
 
 #.PHONY: deps-install
 deps-install: $(addprefix $(ROOT_STAMP_DIR)/,$(addsuffix -install,$(DEPS)))
 
+# --------------------------------------------------
+
+# | Tool       | Purpose       |
+# | ---------- | ------------- |
+# | pytest     | testing       |
+# | pytest-cov | coverage      |
+# | ruff       | lint + format |
+# | mypy       | type checking |
+
+TEST_DEPS := pytest pytest-cov ruff mypy
+
+$(foreach d,$(TEST_DEPS),$(eval $(call DEP_INSTALL_RULE,$(d))))
+
+#.PHONY: test-deps-install
+test-deps-install: $(addprefix $(ROOT_STAMP_DIR)/,$(addsuffix -install,$(TEST_DEPS)))
+	
 # --------------------------------------------------
 
 THIS_PROJECT_DEV_INSTALL = $(ROOT_STAMP_DIR)/$(THIS_PROJECT)-install
@@ -57,7 +77,7 @@ $(THIS_PROJECT_DEV_INSTALL): $(MKDOCS_INSTALL) $(MDDOCS_INSTALL)
 	pip install -e .
 	$(ROOT_STAMP)
 
-self-dev-install: deps-install $(THIS_PROJECT_DEV_INSTALL)
+self-dev-install: deps-install test-deps-install $(THIS_PROJECT_DEV_INSTALL)
 
 # --------------------------------------------------
 
@@ -134,3 +154,19 @@ $(BUMPVER_INSTALL):
 
 bumpver: $(BUMPVER_INSTALL)
 	bumpver update --$(LEVEL)
+
+# --------------------------------------------------
+
+# Command | Description
+# --- | ---
+# pytest | Run all tests
+# pytest -v | Run all tests verbosely
+# pytest tests/test_config_util.py | Run one file
+# pytest tests/<test>.py::<test_func> | Run one test function
+# pytest -s |Show print output (By default pytest captures stdout.)
+# pytest -x | Stop on first failure
+# pytest --cov=src/pyutils | Run with coverage
+# python -m pytest -v | Recommended
+
+tests-run: test-deps-install
+	python -m pytest -v
